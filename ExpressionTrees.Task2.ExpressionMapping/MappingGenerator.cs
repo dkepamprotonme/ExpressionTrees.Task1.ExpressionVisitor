@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-
 namespace ExpressionTrees.Task2.ExpressionMapping
 {
     public class MappingGenerator
@@ -13,7 +12,6 @@ namespace ExpressionTrees.Task2.ExpressionMapping
                     Expression.New(typeof(TDestination)),
                     sourceParam
                 );
-
             return new Mapper<TSource, TDestination>(mapFunction.Compile());
         }
     }
