@@ -7,7 +7,8 @@
  * The results could be printed in console or checked via Debugger using any Visualizer.
  */
 using System;
-
+using System.Collections.Generic;
+using System.Linq.Expressions;
 namespace ExpressionTrees.Task1.ExpressionsTransformer
 {
     class Program
@@ -16,9 +17,23 @@ namespace ExpressionTrees.Task1.ExpressionsTransformer
         {
             Console.WriteLine("Expression Visitor for increment/decrement.");
             Console.WriteLine();
-
             // todo: feel free to add your code here
-
+            var visitor = new IncDecExpressionVisitor();
+            Expression<Func<int, int>> addExpression = (int x) => x + 1;
+            var incrementExpression = visitor.Transform(addExpression);
+            Console.WriteLine($"Expression: {addExpression} Replaced: {incrementExpression}");
+            Console.WriteLine();
+            Expression<Func<int, int>> subtractExpression = (int x) => x - 1;
+            var decrementExpression = visitor.Transform(subtractExpression);
+            Console.WriteLine($"Expression: {subtractExpression} Replaced: {decrementExpression}");
+            Console.WriteLine();
+            var parameterReplacer = new ParameterReplacer();
+            Expression<Func<int, int, int>> expression = (int x, int y) => x + 1 + y - 1;
+            var dictionary = new Dictionary<string, int>() { { "x", 10 }, { "y", 20 } };
+            var replaced = parameterReplacer.Replace(expression, dictionary);
+            var compiled = replaced.Compile();
+            var result = compiled.DynamicInvoke();
+            Console.WriteLine($"Expression: {expression} Dictionary: {string.Join(",", dictionary)} Replaced: {replaced} Result: {result}");
             Console.ReadLine();
         }
     }
